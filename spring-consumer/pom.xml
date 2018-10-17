@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.daiwei.rabbit</groupId>
-    <artifactId>spring-producer</artifactId>
+    <artifactId>spring-consumer</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>spring-producer</name>
-    <description>RabbitMQ in SpringBoot Demo project</description>
+    <name>spring-consumer</name>
+    <description>Spring consumer in rabbitMQ test</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -32,13 +32,13 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <dependency>
