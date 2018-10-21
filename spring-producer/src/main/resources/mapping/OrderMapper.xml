@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.daiwei.rabbit.mapper.OrderMapper">
+
+    <resultMap type="com.daiwei.rabbit.entity.Order" id="orderMap">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="msg_id" property="msgId"/>
+    </resultMap>
+
+    <sql id="insertColumn">
+        (msg_id,
+        `name`)
+    </sql>
+
+    <sql id="orderColumn">
+        o.id,
+        o.msg_id,
+        o.name
+    </sql>
+
+    <select id="getOrderById" resultMap="orderMap" >
+        SELECT <include refid="orderColumn" />
+        FROM t_order o
+        WHERE o.id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.daiwei.rabbit.entity.Order" useGeneratedKeys="true">
+        INSERT INTO
+          t_order <include refid="insertColumn"/>
+        values (#{msgId}, #{name})
+    </insert>
+
+
+</mapper>

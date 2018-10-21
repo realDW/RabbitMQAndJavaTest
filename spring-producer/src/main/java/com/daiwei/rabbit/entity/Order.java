@@ -15,11 +15,11 @@ public class Order implements Serializable {
 
     private String name;
 
-    private String msgId;
+    private Long msgId;
 
     public Order() {}
 
-    public Order(Long id, String name, String msgId) {
+    public Order(Long id, String name, Long msgId) {
         this.id = id;
         this.name = name;
         this.msgId = msgId;
@@ -41,11 +41,20 @@ public class Order implements Serializable {
         this.name = name;
     }
 
-    public String getMsgId() {
+    public Long getMsgId() {
         return msgId;
     }
 
-    public void setMsgId(String msgId) {
+    public void setMsgId(Long msgId) {
         this.msgId = msgId;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", msgId='" + msgId + '\'' +
+                '}';
     }
 }

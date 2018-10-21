@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.daiwei.rabbit.mapper.BrokerMessageLogMapper">
+
+    <resultMap type="com.daiwei.rabbit.entity.BrokerMessageLog" id="logMap">
+        <id column="id" property="id"/>
+        <result column="try_count" property="tryCount"/>
+        <result column="create_time" property="createTime"/>
+        <result column="next_retry" property="nextRetry"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <sql id="msgColumn">
+        m.id,
+        m.message,
+        m.try_count，
+        m.status,
+        m.create_time,
+        m.next_retry,
+        m.update_time
+    </sql>
+
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.daiwei.rabbit.entity.BrokerMessageLog">
+        INSERT INTO t_message_log (
+            message,
+            try_count,
+            STATUS,
+            next_retry,
+            create_time,
+            update_time
+        )
+        VALUES
+            (
+                #{message},
+                #{tryCount},
+                #{status},
+                #{nextRetry},
+                #{createTime},
+                #{updateTime}
+            );
+    </insert>
+
+    <update id="updateSuccessStatus" parameterType="long">
+        UPDATE
+            t_message_log
+        SET
+            try_count = try_count + 1,
+            `status` = '1',
+            update_time = SYSDATE()
+        WHERE
+            id = #{msgId};
+    </update>
+
+    <select id="getMsgList4Resend" resultMap="logMap">
+        SELECT
+          <include refid="msgColumn"/>
+        FROM
+          t_message_log m
+        WHERE
+          m.next_retry &lt;= SYSDATE()
+          AND m.`status` = 0;
+    </select>
+
+    <update id="updateFailedStatus" parameterType="long">
+        UPDATE t_message_log
+        SET `status` = 2
+        WHERE
+            id = #{msgId};
+    </update>
+
+    <update id="update4Resend" parameterType="long">
+        UPDATE t_message_log
+        SET try_count = try_count + 1
+        AND update_time = SYSDATE()
+        WHERE
+            id = #{msgId};
+    </update>
+
+
+</mapper>
